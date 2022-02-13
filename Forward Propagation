@@ -1,0 +1,14 @@
+def forwardPropagation(X,parameters):
+  preactivation={}
+  activation={}
+  activation['h0']=X.T
+  #print(activation['h0'].shape)
+  for k in range(1,noOfHiddenLayers+1):
+    preactivation['a'+str(k)]=np.dot(parameters['W'+str(k)],activation['h'+str(k-1)])+parameters['b'+str(k)]
+    activation['h'+str(k)]=sigmoidFunc(preactivation['a'+str(k)])
+    #print('h size '+str(k),activation['h'+str(k)].shape)
+    #print('a'+str(k),preactivation['a'+str(k)])
+  preactivation['a'+str(noOfHiddenLayers+1)]=np.dot(parameters['W'+str(noOfHiddenLayers+1)],activation['h'+str(noOfHiddenLayers)])+parameters['b'+str(noOfHiddenLayers+1)]
+  y=softmax(preactivation['a'+str(noOfHiddenLayers+1)])    
+  #print("a last" ,preactivation['a'+str(noOfHiddenLayers+1)])
+  return (preactivation,activation,y)
