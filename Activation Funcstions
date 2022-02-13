@@ -2,6 +2,7 @@ import numpy as np
 import math
 
 # Define Functions
+
 def sigmoid(x):
     return 1.0 / (1.0 + np.exp(-x))
     
@@ -11,10 +12,16 @@ def tanh(x):
     
     
 def relu(x):
-    return x * (x > 0)
+    return np.max(0,x)
+    
+def softmax(X):
+    X = np.exp(X)
+    sum = np.sum(X, axis=0)
+    return X / sum 
     
 
 # Deriavtives of functions
+
 def sigmoid_derivative(x):
     return sigmoid(x) * (1 - sigmoid(x))
 
@@ -29,25 +36,3 @@ def relu_derivative(X):
     return X
 
 
-
-
-def softmax(X):
-    X = np.exp(X)
-    sum = np.sum(X, axis=0)
-    return X / sum
-
-
-def squared_loss(y_hat, y, n_class, n_examples):
-    eIndicator = np.zeros((n_class, n_examples))
-    eIndicator[y, np.arange(n_examples)] = 1
-    return np.sum((y_hat - eIndicator)**2) / n_examples
-
-
-
-def cross_entropy(yhat, y_train, n_class, n_examples):
-    eIndicator = np.zeros((n_class, n_examples))
-    eIndicator[y_train, np.arange(n_examples)] = 1
-    eIndicator = eIndicator * yhat
-    eIndicator = eIndicator.sum(axis=0)
-    eIndicator = np.log(eIndicator)
-    return -sum(eIndicator)/n_examples
